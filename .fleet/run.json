@@ -8,8 +8,12 @@
         {
             "type": "command",
             "name": "Command configuration",
-            "program": "$PROJECT_DIR$\\node_modules\\.bin\\http-server",
-            "args": [".", "-p", "8000"],
+            "program": "$PROJECT_DIR$/node_modules/.bin/http-server",
+            "args": [
+                ".",
+                "-p",
+                "8000"
+            ],
         }
     ]
 }
