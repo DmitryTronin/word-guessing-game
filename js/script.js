@@ -5,12 +5,13 @@ wrongLetter = document.querySelector(".wrong-letter span"),
 resetBtn = document.querySelector(".reset-btn"),
 typingInput = document.querySelector(".typing-input");
 
-let word, maxGuesses, incorrectLetters = [], correctLetters = [];
+let word, maxGuesses, isGameOver, incorrectLetters = [], correctLetters = [];
 
 function randomWord() {
     let ranItem = wordList[Math.floor(Math.random() * wordList.length)];
     word = ranItem.word;
     maxGuesses = word.length >= 5 ? 8 : 6;
+    isGameOver = false;
     correctLetters = []; incorrectLetters = [];
     hintTag.innerText = ranItem.hint;
     guessLeft.innerText = maxGuesses;
@@ -26,11 +27,16 @@ randomWord();
 
 function initGame(e) {
     let key = e.target.value.toLowerCase();
+    if(isGameOver) {
+        typingInput.value = "";
+        return;
+    }
+
     if(key.match(/^[A-Za-z]+$/) && !incorrectLetters.includes(` ${key}`) && !correctLetters.includes(key)) {
         if(word.includes(key)) {
             for (let i = 0; i < word.length; i++) {
                 if(word[i] == key) {
-                    correctLetters += key;
+                    correctLetters.push(key);
                     inputs.querySelectorAll("input")[i].value = key;
                 }
             }
@@ -43,11 +49,15 @@ function initGame(e) {
     }
     typingInput.value = "";
 
+    const hasWon = correctLetters.length === word.length;
+    const hasLost = maxGuesses < 1;
+    if(hasWon || hasLost) isGameOver = true;
+
     setTimeout(() => {
-        if(correctLetters.length === word.length) {
+        if(hasWon) {
             alert(`Congrats! You found the word ${word.toUpperCase()}`);
             return randomWord();
-        } else if(maxGuesses < 1) {
+        } else if(hasLost) {
             alert("Game over! You don't have remaining guesses");
             for(let i = 0; i < word.length; i++) {
                 inputs.querySelectorAll("input")[i].value = word[i];
