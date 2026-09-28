@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "aiae441-word-game": {
+      "command": "node",
+      "args": ["qa-fixtures/aiae441-word-game-mcp-server.mjs"]
+    }
+  }
+}
